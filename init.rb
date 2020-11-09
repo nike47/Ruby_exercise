@@ -8,7 +8,6 @@ begin
     c.sub(40)
     c.result
     c.div(0)
-    c.result
 rescue => exception
     puts exception
     
