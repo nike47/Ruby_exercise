@@ -1,9 +1,8 @@
 class Calculator
     @result = 0
-    begin
-    def initialize(val)
-        @result = val
         
+    def initialize(val)
+        @result = val      
     end
 
     def sub(value)
@@ -17,17 +16,13 @@ class Calculator
     def mult(value)
         @result *= value
     end
-
+  
     def div(value)
         @result /= value
-    end
-
+    end       
+    
     def result
         puts @result
     end
-
-rescue Exception => e
-    puts e.message
-end
 
 end
