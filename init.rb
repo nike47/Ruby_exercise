@@ -9,8 +9,6 @@ begin
     c.result
     c.div(0)
     c.result
-    c.mult(7)
-    c.result
 rescue => exception
     puts exception
     
