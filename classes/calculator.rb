@@ -22,7 +22,7 @@ class Calculator
     end       
     
     def result
-        puts @result
+        @result
     end
 
 end
