@@ -10,11 +10,13 @@ class LoadCalculator
 
 
     def display
+    
         load
         @answers = []
         full = []
         # @calculator = Calculator.new()
         @csv.each do |row|
+            begin
             @calculator = Calculator.new(row[0].to_i)
             @iter = 1
             while @iter <= row.length
@@ -26,22 +28,29 @@ class LoadCalculator
                     @calculator.mult(row[@iter+1].to_i)
                 elsif row[@iter] == '/'
                     @calculator.div(row[@iter+1].to_i)
-
+                else
+                    row<<"n/a"
+                    break
                 end
                 @iter+=2
             end
             @answers << @calculator.result
             row<< @calculator.result.to_s
-            full << row
+        rescue => exception
+            row<<"n/a"
+        end
+        full << row
+        end
             
-           
+            
+            a = CSV.open("out.csv","w")
+            full.each do |line|
+                a<<line
             
         end
-        a = CSV.open("out.csv","w")
-        full.each do |line|
-            a<<line
+        
         end
-    end        
+          
         
 
     private
