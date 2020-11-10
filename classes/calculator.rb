@@ -2,6 +2,10 @@ class Calculator
     @result = 0
         
     def initialize(val)
+        # if !val.is_number?
+        #     puts val
+        #     raise "This is not a number"
+        # end
         @result = val      
     end
 

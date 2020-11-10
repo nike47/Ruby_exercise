@@ -28,9 +28,7 @@ class LoadCalculator
                     @calculator.mult(row[@iter+1].to_i)
                 elsif row[@iter] == '/'
                     @calculator.div(row[@iter+1].to_i)
-                else
-                    row<<"n/a"
-                    break
+                
                 end
                 @iter+=2
             end
@@ -43,7 +41,7 @@ class LoadCalculator
         end
             
             
-            a = CSV.open("out.csv","w")
+            a = CSV.open("assets/out.csv","w")
             full.each do |line|
                 a<<line
             
