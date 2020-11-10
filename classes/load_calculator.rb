@@ -12,6 +12,7 @@ class LoadCalculator
     def display
         load
         @answers = []
+        full = []
         # @calculator = Calculator.new()
         @csv.each do |row|
             @calculator = Calculator.new(row[0].to_i)
@@ -30,17 +31,18 @@ class LoadCalculator
                 @iter+=2
             end
             @answers << @calculator.result
-            row<< @calculator.result
-            puts row
+            row<< @calculator.result.to_s
+            full << row
+            
+           
             
         end
-        # print @answers
-        # # @csv << @answers
-        # @answers.each do |ans|
-        #     puts [ans]
-        #     @csv << [ans]
-        # end
-    end
+        a = CSV.open("out.csv","w")
+        full.each do |line|
+            a<<line
+        end
+    end        
+        
 
     private
 
