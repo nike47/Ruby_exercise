@@ -4,6 +4,6 @@ require_relative 'classes/user_manager.rb'
 
 user = UserManager.new('assets/users.csv')
 # user.search('nikhil')
-user.sort('id','DESC').limit(1).write
+# user.sort('id','ASC').search('nikhil').limit(2).show
 # user.limit(3)
-# user.write
+user.limit(2).offset(5).search('nikhil').show

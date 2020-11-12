@@ -20,10 +20,13 @@ class UserManager
         # puts @results
         @result = @result.to_a
         puts @max_length
+        # puts @result
         # [@offset...@max_length].each do |row| 
         #     puts @result[row].values
         # end
-        @result = @result[@offset...@max_length]
+        # @result = @result[@offset..@max_length]
+        # puts @results
+        
         @result.each do |x|
             a = Hash[x]
             puts a.values
@@ -55,26 +58,44 @@ class UserManager
 
     def offset(off)
         @offset = off
+        if @result.nil?
+            @final = @con.exec " SELECT * FROM Users ORDER BY id OFFSET #{@offset} ROWS"
+            @result = @final
+        else
+            @result = @result.to_a
+            @result = @result[@offset..@max_length]
+        end
         self
     end
 
     def limit(lim)
-        @max_length = lim
+        @max_length = @offset + lim
+        if @result.nil?
+            @final = @con.exec " SELECT * FROM Users ORDER BY id OFFSET #{@offset} ROWS FETCH NEXT #{@max_length} ROWS ONLY"
+            @result = @final
+        else
+            @result = @result.to_a
+            @result = @result[@offset...@max_length]
+            
+        end
         self
     end
    
     def search(n)
-        
         @result = []
         if !@final.nil?
+            # @final = @final.to_a
+            # @final = @final[@offset...@max_length]
+            # @final = Hash(@final)
             @final.each do |row|
                 if row['id'] == n or row['first_name'] == n or row['second_name'] == n or row['email'] == n
                     @result << row
                 end
             end
         else
-            @final = @con.exec "SELECT * FROM Users WHERE first_name = '#{n}' OR second_name = '#{n}' OR email = '#{n}'"
+            @final = @con.exec "SELECT * FROM Users WHERE id = '#{n}' OR first_name = '#{n}' OR second_name = '#{n}' OR email = '#{n}'"
         end
+
         if @result.nil?
             @result = @final
         end
@@ -109,7 +130,7 @@ class UserManager
                 :password => 'password'
         
                 @con.exec "DROP TABLE IF EXISTS Users"
-                @con.exec "CREATE TABLE Users(Id INTEGER, 
+                @con.exec "CREATE TABLE Users(Id VARCHAR(20), 
                     First_Name VARCHAR(20), Second_Name VARCHAR(20),Email VARCHAR(50))"
                 @con.exec "COPY Users FROM '/home/nike47/Desktop/Ruby_exercise/user_manager/assets/users.csv' WITH (FORMAT csv);"
                 @test = @con.exec "SELECT * FROM Users"
