@@ -3,10 +3,10 @@ require 'pg'
 
 class UserManager
 
-    def self.load(path)
-        user = UserManager.new(path)
-        return user
-    end
+    # def self.load(path)
+    #     user = UserManager.new(path)
+    #     return user
+    # end
 
 
     def initialize(path)
@@ -60,10 +60,7 @@ class UserManager
             @result = @final
         else
             @result = @result.to_a
-            puts @max_length
             @result = @result[0,@max_length]
-            puts @result
-            
         end
         self
     end
