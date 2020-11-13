@@ -50,18 +50,21 @@ class UserManager
         else
             @result = @result.to_a
             @result = @result[@offset,@max_length]
+            # puts @result
         end
         self
     end
 
     def limit(lim)
-        @max_length = @offset + lim
+        @max_length =  lim
         if @result.nil?
             @final = @con.exec " SELECT * FROM Users ORDER BY id OFFSET #{@offset} ROWS FETCH NEXT #{@max_length} ROWS ONLY"
             @result = @final
         else
             @result = @result.to_a
-            @result = @result[@offset,@max_length]
+            puts @max_length
+            @result = @result[0,@max_length]
+            puts @result
             
         end
         self
