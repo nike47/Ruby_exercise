@@ -16,9 +16,7 @@ class UserManager
 
     end
 
-    def show
-        
-        
+    def show       
         @result.each do |x|
             a = Hash[x]
             puts x
