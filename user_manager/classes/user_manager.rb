@@ -18,34 +18,37 @@ class UserManager
         # puts @max_length
         # puts @search
         # puts @results
-        @result = @result.to_a
+        # @result = @result.to_a
         puts @max_length
         # puts @result
         # [@offset...@max_length].each do |row| 
         #     puts @result[row].values
         # end
         # @result = @result[@offset..@max_length]
-        # puts @results
+        puts @result.class
         
         @result.each do |x|
             a = Hash[x]
-            puts a.values
+            puts x
         end
         self
     end
 
     def write
         a = CSV.open("assets/out.csv","w")
-        @result = @result.to_a
-        column_names = @result.first.keys
+        # @result = @result.to_a
+        # b = Hash(@result)
+        column_names = ['id','first_name','second_name','email']
         puts column_names
         s=CSV.generate do |csv|
             csv << column_names
-            @result = @result[@offset...@max_length]
+            # @result = @result[@offset...@max_length]
             
             @result.each do |x|
-                a = Hash[x]
-                csv << a.values
+                puts "here"
+                b = Hash[x]
+                puts x.class
+                csv << b.values
               end
           end
           File.write('assets/out.csv', s)
@@ -63,7 +66,7 @@ class UserManager
             @result = @final
         else
             @result = @result.to_a
-            @result = @result[@offset..@max_length]
+            @result = @result[@offset,@max_length]
         end
         self
     end
@@ -75,7 +78,7 @@ class UserManager
             @result = @final
         else
             @result = @result.to_a
-            @result = @result[@offset...@max_length]
+            @result = @result[@offset,@max_length]
             
         end
         self
@@ -87,17 +90,22 @@ class UserManager
             # @final = @final.to_a
             # @final = @final[@offset...@max_length]
             # @final = Hash(@final)
+            
             @final.each do |row|
                 if row['id'] == n or row['first_name'] == n or row['second_name'] == n or row['email'] == n
                     @result << row
                 end
             end
         else
+            
             @final = @con.exec "SELECT * FROM Users WHERE id = '#{n}' OR first_name = '#{n}' OR second_name = '#{n}' OR email = '#{n}'"
+            
         end
 
-        if @result.nil?
+        if !@result.nil?
+           
             @result = @final
+            
         end
         self
     end
@@ -117,7 +125,7 @@ class UserManager
             @final = @con.exec "SELECT * FROM Users ORDER BY #{fi} ASC"
             end
     end
-    if @result.nil?
+    if !@result.nil?
         @result = @final
     end
     self
