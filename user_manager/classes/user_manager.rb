@@ -107,8 +107,7 @@ class UserManager
     def loaddata
         begin
             @con = PG.connect :dbname => 'userdb', :user => 'nike47', 
-                :password => 'password'
-        
+                :password => 'password'       
                 @con.exec "DROP TABLE IF EXISTS Users"
                 @con.exec "CREATE TABLE Users(Id VARCHAR(20), 
                     First_Name VARCHAR(20), Second_Name VARCHAR(20),Email VARCHAR(50))"
