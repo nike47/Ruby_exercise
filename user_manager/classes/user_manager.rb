@@ -3,29 +3,21 @@ require 'pg'
 
 class UserManager
 
+    def self.load(path)
+        user = UserManager.new(path)
+        return user
+    end
+
+
     def initialize(path)
         @path = path
         @offset = 0
-        load
+        loaddata
 
     end
 
     def show
         
-       
-        # puts @headers[0]
-        # puts @limit
-        # puts @max_length
-        # puts @search
-        # puts @results
-        # @result = @result.to_a
-        puts @max_length
-        # puts @result
-        # [@offset...@max_length].each do |row| 
-        #     puts @result[row].values
-        # end
-        # @result = @result[@offset..@max_length]
-        puts @result.class
         
         @result.each do |x|
             a = Hash[x]
@@ -36,25 +28,22 @@ class UserManager
 
     def write
         a = CSV.open("assets/out.csv","w")
-        # @result = @result.to_a
-        # b = Hash(@result)
+       
         column_names = ['id','first_name','second_name','email']
-        puts column_names
+   
         s=CSV.generate do |csv|
             csv << column_names
-            # @result = @result[@offset...@max_length]
+            
             
             @result.each do |x|
-                puts "here"
+               
                 b = Hash[x]
-                puts x.class
+                
                 csv << b.values
               end
           end
           File.write('assets/out.csv', s)
-    #     [@offset...@max_length].each do |row| 
-    #     a << @result[row].to_a
-    # end
+    
            self
     end
 
@@ -87,9 +76,7 @@ class UserManager
     def search(n)
         @result = []
         if !@final.nil?
-            # @final = @final.to_a
-            # @final = @final[@offset...@max_length]
-            # @final = Hash(@final)
+            
             
             @final.each do |row|
                 if row['id'] == n or row['first_name'] == n or row['second_name'] == n or row['email'] == n
@@ -131,7 +118,7 @@ class UserManager
     self
     end
 
-    def load
+    def loaddata
         begin
 
             @con = PG.connect :dbname => 'userdb', :user => 'nike47', 
