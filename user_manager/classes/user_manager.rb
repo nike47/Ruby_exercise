@@ -27,18 +27,12 @@ class UserManager
     end
 
     def write
-        a = CSV.open("assets/out.csv","w")
-       
-        column_names = ['id','first_name','second_name','email']
-   
+        a = CSV.open("assets/out.csv","w")      
+        column_names = ['id','first_name','second_name','email']  
         s=CSV.generate do |csv|
-            csv << column_names
-            
-            
-            @result.each do |x|
-               
-                b = Hash[x]
-                
+            csv << column_names          
+            @result.each do |x|               
+                b = Hash[x]               
                 csv << b.values
               end
           end
@@ -75,30 +69,22 @@ class UserManager
    
     def search(n)
         @result = []
-        if !@final.nil?
-            
-            
-            @final.each do |row|
-                if row['id'] == n or row['first_name'] == n or row['second_name'] == n or row['email'] == n
-                    @result << row
-                end
+        if !@final.nil?           
+           @final.each do |row|
+            if row['id'] == n or row['first_name'] == n or row['second_name'] == n or row['email'] == n
+                @result << row
             end
-        else
-            
-            @final = @con.exec "SELECT * FROM Users WHERE id = '#{n}' OR first_name = '#{n}' OR second_name = '#{n}' OR email = '#{n}'"
-            
+            end
+        else           
+            @final = @con.exec "SELECT * FROM Users WHERE id = '#{n}' OR first_name = '#{n}' OR second_name = '#{n}' OR email = '#{n}'"           
         end
-
-        if !@result.nil?
-           
-            @result = @final
-            
+        if !@result.nil?          
+            @result = @final           
         end
         self
     end
 
-    def sort(fi, dir)
-        
+    def sort(fi, dir)        
         if !@final.nil?
             if dir == 'ASC'
             @result = @final.sort{|h,s| h[fi] <=> s[fi]}
@@ -120,7 +106,6 @@ class UserManager
 
     def loaddata
         begin
-
             @con = PG.connect :dbname => 'userdb', :user => 'nike47', 
                 :password => 'password'
         
@@ -129,12 +114,8 @@ class UserManager
                     First_Name VARCHAR(20), Second_Name VARCHAR(20),Email VARCHAR(50))"
                 @con.exec "COPY Users FROM '/home/nike47/Desktop/Ruby_exercise/user_manager/assets/users.csv' WITH (FORMAT csv);"
                 @test = @con.exec "SELECT * FROM Users"
-        rescue PG::Error => e
-        
-            puts e.message 
-            
-     
-            
+        rescue PG::Error => e        
+            puts e.message                             
         end     
         @max_length = (CSV.open(@path).readlines.size)
     end
